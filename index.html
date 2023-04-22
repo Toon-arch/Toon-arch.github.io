@@ -40,6 +40,15 @@
             margin-left: 0.5em;
         }
 
+        #pinned-article-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #pinned-article-list>a {
+            margin-left: 0.5em;
+        }
+
         #article-content * {
             max-width: 100%;
         }
@@ -60,8 +69,9 @@
             <p>looking for <a href="/socials">my socials</a>?</p>
             <h1>my thoughts</h1>
             <p>since i have trouble expressing to people, i have <s>stolen this from another person</s> created this public personal journal.</p>
-            <b>Pinned Articles</b>
-            <br><a href="/?a=welcome.md"> welcome</a>
+            <div id="pinned-article-list">
+                loading...
+            </div>
             <hr>
             <div id="article-list">
                 loading...
@@ -148,18 +158,27 @@
             );
         }
 
+        const pinned = ["welcome"];
         function generateListElement() {
             document.getElementById('homepage').style.display = null;
             document.getElementById('article').style.display = 'none';
 
-            const container = document.getElementById('article-list');
-            container.innerHTML = '<b>Articles</b>';
+            const pins = document.getElementById('pinned-article-list');
+            pins.innerHTML = '<b>Pinned Articles</b>';
+            const list = document.getElementById('article-list');
+            list.innerHTML = '<b>Articles</b>';
 
             for (const article of articles) {
+                if (pinned.includes(article.name)) {
+                    const link = document.createElement('a');
+                    link.href = '/?a=' + article.id;
+                    link.innerText = article.name;
+                    pins.append(link);
+                }
                 const link = document.createElement('a');
                 link.href = '/?a=' + article.id;
                 link.innerText = article.name;
-                container.append(link);
+                list.append(link);
             }
         }
     </script>
